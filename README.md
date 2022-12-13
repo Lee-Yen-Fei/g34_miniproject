@@ -1,4 +1,7 @@
-# cGpa-calculator
+# Group 34 Mini Project for EEE123 Computer Programming for Engineers
+Title: Hotel Reservation System
+
+Members:
 Hamizan23
 AMIR HAMIZAN BIN KAMARULZAMAN
 
