@@ -1,0 +1,60 @@
+Users: (Username & Password)
+1. Admin
+/* -security clearance level 3 (only 1)
+(create lvl 2 admin accounts) */
+- security clearance level 2
+(create lvl 1 admin accounts, add room, update room)
+- security clearance level 1
+(review and confirm pending booking, check customer booking, check room available)
+2. Customer
+(book room, cancel room, check room availability)
+
+Functions:
+login()
+output (asking), input: type of user
+process: read admin, customer file
+output (asking), input: username
+process: check for the username
+check for username
+output (asking), input: password
+process: check the password for the entered username
+if the username and passwords match >>> enter main menu
+else retry
+
+logout()
+process: loginStatus = 0
+
+
+createNewUser()
+*do not accept users with the same username
+process: read username password file
+output (asking), input: type of user
+output (asking), input: username
+process: check for the username
+check for username
+if the username and passwords match >>> continue
+else retry
+output (asking), input: password
+create class admin lvl 1 or customer
+
+changePassword()
+*do not accept users with the same username
+process: read username password file
+output (asking), input: type of user
+output (asking), input: username
+process: check for the username
+check for username
+if the username and passwords match >>> continue
+else retry
+output (asking), input: password
+create class admin lvl 1 or customer
+
+addRoom()
+
+
+updateRoom()
+reviewBooking()
+confirmBooking()
+roomAvailability()
+bookRoom()
+cancelRoom()
