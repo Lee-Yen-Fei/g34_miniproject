@@ -1,0 +1,32 @@
+    if(loginStatus == true){
+    cout << "1.Change Password\n2.Logout\n3.Add New Rooms\n4.Update Room Info\n";
+
+    if(typeOfUser == "ADMIN"){
+        cout << "5.Create new admin account\n";
+    }
+
+    cin >> selection;
+    if(selection == 1){
+        changePassword(j);
+    }
+
+    if(selection == 2){
+        logout(loginStatus);
+    }
+
+/*
+    if(selection == 3){
+
+    }
+
+    if(selection == 4){
+
+    }
+*/
+
+    if(typeOfUser == "ADMIN"){
+        if(selection == 5){
+            createNewUser(typeOfUser);
+        }
+    }
+    }  
