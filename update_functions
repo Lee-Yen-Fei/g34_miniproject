@@ -1,0 +1,149 @@
+bool login(bool loginStatus, int &i){ //login system
+    cout << "\nWelcome to the Hotel G34 Reservation System!\nYou will have to login.\n";
+
+    string username;
+    vector<string> fileUsername; //dynamic array (vector) to store usernames
+    bool validUsername = false;
+
+    ifstream userIDFile ("userID.txt");
+    string fileLine;
+
+    while (validUsername == false){
+        cout << "\nPlease enter your username\n";
+        cin >> username;
+
+        while (getline (userIDFile, fileLine)){ 
+            fileUsername.push_back(fileLine);   //vector append function
+        }
+
+        for(i = 0; i < size(fileUsername); i++){
+            if (username == fileUsername[i]){
+                validUsername = true;
+                userIDFile.close();
+                fileUsername.clear();
+                break;
+            } 
+        }
+
+        if (validUsername == false){
+            cout << "\nInvalid username. Please try again. Note: Usernames are case-sensitive.";
+        } //error message when user input is invalid
+    } 
+
+    ifstream passwordFile ("password.txt");
+    int passwordTry = 4;
+    string password;
+    vector<string> filePassword; //dynamic array to store read values from file
+
+    while (loginStatus == false){
+        cout << "\nPlease enter your password.\n";
+        cin >> password;
+
+        while (getline (passwordFile, fileLine)){
+            filePassword.push_back(fileLine); 
+        }  
+
+        if (password == filePassword[i]){ 
+            loginStatus = true; //returns true for passwordTrue
+            passwordFile.close();
+        }
+
+        if (loginStatus == false){
+            passwordTry --;
+            cout << "\nInvalid password. You have " << passwordTry << " tries left. Please try again.\n";
+
+            if(passwordTry == 0){
+                passwordFile.close();
+                loginStatus = false;   //to avoid unauthourised use of account
+                break;
+            }
+        }
+    }
+    
+    filePassword.clear();   //deletes the vector
+
+    return loginStatus;
+}
+
+void createNewUser(){ //Creates a new user account
+    cout << "Please fill in the details to register a new account.\n";
+
+    ifstream userIDFile ("userID.txt");
+    fstream passwordFile ("password.txt", ios::app);
+    //ios::app to add new data to the end of the file
+
+    vector<string> fileUsername;
+    string fileLine;
+    string input;
+    bool newUser = false;
+
+    while(getline(userIDFile, fileLine)){
+        fileUsername.push_back(fileLine);
+    }
+
+    userIDFile.close();
+
+    while(newUser == false){
+        cout << "\nPlease enter your username\n";
+        cin >> input;
+
+        for(int j = 0; j < size(fileUsername); j++){
+            if(input == fileUsername[j]){
+                cout << "This username is already taken.\n Please try again.\n";
+                newUser = false;
+                break;
+            }
+
+            newUser = true;
+        }
+    }
+
+//the file is opened twice to avoid errors
+    fstream userIDFile1("userID.txt", ios::app);    
+
+    userIDFile1 << input << endl; 
+    cout << "\nPlease enter your password\n";
+    cin >> input;
+    passwordFile << input << endl;
+
+    cout << "\nYour new account has been created =)\n\n";
+
+    fileUsername.clear();
+    userIDFile1.close();
+    passwordFile.close();
+}
+
+void changePassword(int i){ //Changing password to a new one function
+    fstream passwordFile("password.txt");
+
+    string fileLine;
+    vector<string> filePassword;    
+    while (getline (passwordFile, fileLine)){
+        filePassword.push_back(fileLine); 
+    }
+
+    while (true){
+        cout << "Please enter your original password\n";
+        string originalPassword;
+        cin >> originalPassword;
+
+        if(originalPassword == filePassword[i]){
+            cout << "Please enter your new password\n";
+            cin >> filePassword[i];
+//changes the original password into the new password
+
+            fstream passwordFile("password.txt");
+
+            for(int j=0; j < size(filePassword); j++){
+                passwordFile << filePassword[j] <<endl;
+            }
+
+            cout << "Your password has been changed\n\n";
+            break;
+        }
+        else{
+            cout << "Incorrect password. Please try again.\n\n";
+            //error message
+        }
+    }
+}
