@@ -7,14 +7,13 @@ bool login(bool loginStatus, int &i){ //login system
 
     ifstream userIDFile ("userID.txt");
     string fileLine;
+    while (getline (userIDFile, fileLine)){ 
+        fileUsername.push_back(fileLine);   //vector append function
+    }
 
     while (validUsername == false){
         cout << "\nPlease enter your username\n";
         cin >> username;
-
-        while (getline (userIDFile, fileLine)){ 
-            fileUsername.push_back(fileLine);   //vector append function
-        }
 
         for(i = 0; i < size(fileUsername); i++){
             if (username == fileUsername[i]){
@@ -35,26 +34,27 @@ bool login(bool loginStatus, int &i){ //login system
     string password;
     vector<string> filePassword; //dynamic array to store read values from file
 
+    while (getline (passwordFile, fileLine)){
+        filePassword.push_back(fileLine); 
+    }  
+
     while (loginStatus == false){
         cout << "\nPlease enter your password.\n";
         cin >> password;
-
-        while (getline (passwordFile, fileLine)){
-            filePassword.push_back(fileLine); 
-        }  
 
         if (password == filePassword[i]){ 
             loginStatus = true; //returns true for passwordTrue
             passwordFile.close();
         }
 
-        if (loginStatus == false){
+        else{
             passwordTry --;
             cout << "\nInvalid password. You have " << passwordTry << " tries left. Please try again.\n";
 
             if(passwordTry == 0){
                 passwordFile.close();
                 loginStatus = false;   //to avoid unauthourised use of account
+                cout << "You have entered the wrong password 4 times. \nReturning to the login menu...\n";
                 break;
             }
         }
@@ -122,6 +122,8 @@ void changePassword(int i){ //Changing password to a new one function
         filePassword.push_back(fileLine); 
     }
 
+    passwordFile.close();
+
     while (true){
         cout << "Please enter your original password\n";
         string originalPassword;
@@ -146,4 +148,7 @@ void changePassword(int i){ //Changing password to a new one function
             //error message
         }
     }
+
+    filePassword.clear();
+    passwordFile.close();
 }
