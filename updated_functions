@@ -1,3 +1,27 @@
+void info (string *n, string *i, string *p, string *s){ //Getting customer details on the booking
+    cout << "\nEnter your name (Please enter your first name only): " << endl;
+    cin >> *n;
+    cout << "\nEnter your ic number: " << endl;
+    cin >> *i;
+    cout << "\nEnter your phone number: " << endl;
+    cin >> *p;
+    cout << "\nEnter your address: " << endl;
+    //changes starting from here
+    char address [100];
+    cin.ignore();
+    cin.getline (address, 100); //*changes here
+
+    for(int j = 0; j < size(address); j++){
+        if(address [j] != 0){        
+            *s += address [j];
+        }
+
+        else{
+            break;
+        }
+    }
+}
+
 bool login(bool loginStatus, int &i){ //login system
     cout << "\nWelcome to the Hotel G34 Reservation System!\nYou will have to login.\n";
 
