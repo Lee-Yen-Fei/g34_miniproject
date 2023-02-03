@@ -9,56 +9,73 @@ using namespace std;
 bool login(bool loginStatus, string &typeOfUser, int &i){
     cout << "\nWelcome to the Hostel Reservation App. You will have to login before accessing the app\n";
 
-    string username;
     vector<string> fileUsername;
     bool validUsername = false;
 
     ifstream userIDFile ("userID.txt");
     string fileLine;
+    string username;
+    char stringInput [25];
+
+    int j = 0;
+        
+    while (getline (userIDFile, fileLine)){ //might contain errors
+        fileUsername.push_back(fileLine);
+        j += 1;
+    }
+
+    cin.ignore();
 
     while (validUsername == false){
-        cout << "\nPlease enter your username\n";
-        cin >> username;
-        int j = 0;
+        cout << "\nPlease enter your username.\n";//prevent weird user inputs
+        cin.getline(stringInput, 25);
+        username = stringInput;
 
-        while (getline (userIDFile, fileLine)){ //might contain errors
-            fileUsername.push_back(fileLine);
-            j += 1;
+        if(username.find(" ") != string::npos){ //continue the loop for weird user inputs
+            cout << "Please do not enter whitespaces and newlines";
+            continue;
         }
 
-        for(i = 0; i < j; i++){
-            if (username == fileUsername[i]){
-                validUsername = true;
-                userIDFile.close();
-                fileUsername.clear();
-                break;
-            } 
-        }
+        else if(username != ""){
+            for(i = 0; i < j; i++){
+                if (username == fileUsername[i]){
+                    validUsername = true;
+                    userIDFile.close();
+                    fileUsername.clear();
+                    break;
+                }
+            }
 
-        if (validUsername == false){
-            cout << "\nInvalid username. Please try again. Note: Usernames are case-sensitive.";
+            if (validUsername == false){
+                cout << "\nInvalid username. Please try again. Note: Usernames are case-sensitive.";
+            }
         }
     } 
 
     ifstream passwordFile ("password.txt");
     int passwordTry = 4;
-    string password;
     vector<string> filePassword; //dynamic array to store read values from file
 
+    while (getline (passwordFile, fileLine)){
+        filePassword.push_back(fileLine); 
+    }  
+    
     while (loginStatus == false){
         cout << "\nPlease enter your password.\n";
-        cin >> password;
+        cin.getline(stringInput, 25);
+        string password = stringInput;
 
-        while (getline (passwordFile, fileLine)){
-            filePassword.push_back(fileLine); 
-        }  
+        if(password.find(" ") != string::npos){ //continue the loop for weird user inputs
+            cout << "Please do not enter whitespaces and newlines";
+            continue;
+        }
 
-        if (password == filePassword[i]){ 
+        else if (password == filePassword[i]){ 
             loginStatus = true; //returns true for passwordTrue
             passwordFile.close();
         }
 
-        if (loginStatus == false){
+        else if (loginStatus == false){
             passwordTry --;
             cout << "\nInvalid password. You have " << passwordTry << " tries left. Please try again.\n";
 
@@ -74,7 +91,7 @@ bool login(bool loginStatus, string &typeOfUser, int &i){
 
     if(loginStatus == true){
         ifstream typeOfUserFile ("type_of_user.txt");
-            vector<string> fileTypeOfUser;
+        vector<string> fileTypeOfUser;
 
         while (getline (typeOfUserFile, fileLine)){
             fileTypeOfUser.push_back(fileLine);
@@ -99,18 +116,69 @@ void logout(bool &loginStatus){
 //works fine
 void createNewUser(string typeOfUser){
     cout << "Please fill in the details to register a new account.\n";
-
+    vector<string> fileUsername;
     fstream userIDFile ("userID.txt", ios::app);
     fstream passwordFile ("password.txt", ios::app);
     fstream typeOfUserFile ("type_of_user.txt", ios::app);
 
+    char placeholder [25];
+    string fileLine;
     string input;
-    cout << "\nPlease enter your username\n";
-    cin >> input;
-    userIDFile << input << endl;
+    cin.ignore();
+    int j = 0;
 
-    cout << "\nPlease enter your password\n";
-    cin >> input;
+    while (getline (userIDFile, fileLine)){ //might contain errors
+        fileUsername.push_back(fileLine);
+        j += 1;
+    }
+
+    while(true){
+        cout << "\nPlease enter your username\n";
+        cin.getline(placeholder, 25);
+        input = placeholder;
+
+        if(input.find(" ") != string::npos){ //continue the loop for weird user inputs
+            cout << "Please do not enter whitespaces and newlines\n";
+            continue;
+        }
+
+        bool breakCondition = true;
+
+        while(true){
+            for(int i = 0; i < j; i++){
+                if(input == fileUsername[i]){
+                    breakCondition = false;
+                    cout << "Username is already in use\n";
+                    break;
+                }
+            }
+            
+            if(breakCondition == true){
+                break;
+            }
+        }
+
+        break;
+    }
+
+    userIDFile << input << endl;
+    cin.ignore();
+
+    while(true){
+        cout << "\nPlease enter your password\n";
+        cin.getline(placeholder, 25);
+        input = placeholder;
+
+        if(input.find(" ") != string::npos){ //continue the loop for weird user inputs
+            cout << "Please do not enter whitespaces and newlines";
+            continue;
+        }
+        
+        else{
+            break;
+        }
+    }
+
     passwordFile << input << endl;
 
     if(typeOfUser == "ADMIN"){
@@ -135,35 +203,56 @@ void changePassword(int i){
     fstream passwordFile("password.txt");
 
     string fileLine;
+    char placeholder[25];
     vector<string> filePassword;    
     while (getline (passwordFile, fileLine)){
         filePassword.push_back(fileLine); 
     }
 
     while (true){
-        cout << "Please enter your original password\n";
-        string originalPassword;
-        cin >> originalPassword;
+        cin.ignore();
 
-        if(originalPassword == filePassword[i]){
-            cout << "Please enter your new password";
-            cin >> filePassword[i];
+        while(true){
+            cout << "\nPlease enter your original password\n";
+            cin.getline(placeholder, 25);
+            fileLine = placeholder;
 
-            fstream passwordFile("password.txt");
+            if(fileLine.find(" ") != string::npos){ //continue the loop for weird user inputs
+                cout << "Please do not enter whitespaces and newlines";
+                continue;
+            }
+        
+            else if(fileLine == filePassword[i]){
+                break;
+            }
+        }
 
-            for(int j=0; j < size(filePassword); j++){
-                passwordFile << filePassword[j] <<endl;
+        cin.ignore();
+
+        while(true){
+            cout << "Please enter your new password\n";
+            cin.getline(placeholder, 25);
+            fileLine = placeholder;
+
+            if(fileLine.find(" ") != string::npos){ //continue the loop for weird user inputs
+                cout << "Please do not enter whitespaces and newlines";
+                continue;
             }
 
-            cout << "Your password has been changed\n\n";
-            break;
+            else{
+                break;
+            }
         }
-    }
-}
 
-//have not tested
-/*
-void addRooms(){
+        filePassword[i] = fileLine;
 
+        fstream passwordFile("password.txt");
+
+        for(int j=0; j < size(filePassword); j++){
+            passwordFile << filePassword[j] <<endl;
+        }
+
+        cout << "Your password has been changed\n\n";
+        break;
+    }    
 }
-*/
